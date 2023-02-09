@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+void copy_array(int source[], int target[], int size) {
+  for (int i = 0; i < size; i++) {
+    target[i] = source[i];
+  }
+}
+
+int main() {
+  int source[] = {1, 2, 3, 4, 5};
+  int size = sizeof(source) / sizeof(source[0]);
+  int target[size];
+  copy_
