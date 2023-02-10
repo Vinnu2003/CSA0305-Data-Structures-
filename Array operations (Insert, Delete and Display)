@@ -1,0 +1,66 @@
+#include <stdio.h>
+
+void insert(int arr[], int size, int index, int value)
+{
+    int i;
+    for (i = size-1; i >= index; i--)
+        arr[i+1] = arr[i];
+    arr[index] = value;
+}
+
+void delete(int arr[], int size, int index)
+{
+    int i;
+    for (i = index; i < size-1; i++)
+        arr[i] = arr[i+1];
+}
+
+void display(int arr[], int size)
+{
+    int i;
+    for (i = 0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+int main()
+{
+    int arr[100];
+    int size = 0;
+    int choice, index, value;
+    
+    while (1)
+    {
+        printf("\nArray Operations\n");
+        printf("1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        
+        switch (choice)
+        {
+            case 1:
+                printf("Enter the index and value to insert: ");
+                scanf("%d%d", &index, &value);
+                insert(arr, size, index, value);
+                size++;
+                break;
+            case 2:
+                printf("Enter the index to delete: ");
+                scanf("%d", &index);
+                delete(arr, size, index);
+                size--;
+                break;
+case 3:
+                display(arr, size);
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+    
+    return 0;
+}
