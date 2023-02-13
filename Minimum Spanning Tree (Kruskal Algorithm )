@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 1000
+#define not !
+#define and &&
+#define or ||
+
+typedef struct
+{
+  int u, v, w;
+} Edge;
+
+Edge edges[MAX];
+int parent[MAX];
+int num_vertices;
+int num_edges;
+
+int cmp(const void *a, const void *b)
+{
+  Edge *x = (Edge *)a, *y = (Edge *)b;
+  return x->w - y->w;
+}
+
+int find(int u)
+{
+  if (parent[u] != u)
+    parent[u] = find(parent[u]);
+  return parent[u];
+}
+
+void kruskal()
+{
+  int i, count = 0;
+  for (i = 0; i < num_vertices; i++)
+    parent[i] = i;
+  qsort(edges, num_edges, sizeof(Edge), cmp);
+  for (i = 0; i < num_edges; i++)
+  {
+    int u = find(edges[i].u);
+    int v = find(edges[i].v);
+    if (u != v)
+    {
+      count++;
+      parent[u] = v;
+      printf("%d - %d: %d\n", edges[i].u, edges[i].v, edges[i].w);
+      if (count == num_vertices - 1)
+        break;
+    }
+  }
+}
+
+int main()
+{
+  int i;
+  printf("Enter the number of vertices and edges: ");
+  scanf("%d%d", &num_vertices, &num_edges);
+  printf("Enter the edges (u v w):\n");
+  for (i = 0; i < num_edges; i++)
+    scanf("%d%d%d", &edges[i].u, &edges[i].v, &edges[i].w);
+  printf("The minimum spanning tree is:\n");
+  kruskal();
+  return 0;
+}
