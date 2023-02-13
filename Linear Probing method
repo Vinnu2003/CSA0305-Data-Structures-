@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_SIZE 10
+
+int hashTable[MAX_SIZE];
+
+int hashFunction(int key)
+{
+  return key % MAX_SIZE;
+}
+
+void insert(int key)
+{
+  int index = hashFunction(key);
+  while (hashTable[index] != 0)
+    index = (index + 1) % MAX_SIZE;
+  hashTable[index] = key;
+}
+
+int search(int key)
+{
+  int index = hashFunction(key);
+  int count = 0;
+  while (hashTable[index] != 0)
+  {
+    if (hashTable[index] == key)
+      return index;
+    index = (index + 1) % MAX_SIZE;
+    count++;
+    if (count == MAX_SIZE)
+      return -1;
+  }
+  return -1;
+}
+
+void display()
+{
+  int i;
+  printf("\nElement - Index\n");
+  for (i = 0; i < MAX_SIZE; i++)
+  {
+    if (hashTable[i] != 0)
+      printf("%d - %d\n", hashTable[i], i);
+  }
+}
+
+int main()
+{
+  insert(10);
+  insert(20);
+  insert(30);
+  insert(40);
+  insert(50);
+  display();
+  int result = search(30);
+  if (result == -1)
+    printf("Element not found\n");
+  else
+    printf("Element found at index %d\n", result);
+  return 0;
+}
