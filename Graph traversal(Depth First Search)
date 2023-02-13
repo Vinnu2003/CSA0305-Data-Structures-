@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 1000
+#define not !
+#define and &&
+#define or ||
+
+int graph[MAX][MAX];
+int visited[MAX];
+int num_vertices;
+
+void DFS(int vertex)
+{
+  int i;
+  visited[vertex] = 1;
+  printf("%d ", vertex);
+  for (i = 0; i < num_vertices; i++)
+    if (not visited[i] and graph[vertex][i])
+      DFS(i);
+}
+
+int main()
+{
+  int i, j;
+  int start_vertex;
+  printf("Enter the number of vertices: ");
+  scanf("%d", &num_vertices);
+  printf("Enter the adjacency matrix:\n");
+  for (i = 0; i < num_vertices; i++)
+    for (j = 0; j < num_vertices; j++)
+      scanf("%d", &graph[i][j]);
+  printf("Enter the start vertex: ");
+  scanf("%d", &start_vertex);
+  printf("The DFS traversal is: ");
+  DFS(start_vertex);
+  return 0;
+}
