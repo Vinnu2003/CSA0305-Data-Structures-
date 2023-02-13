@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX 1000
+#define not !
+#define and &&
+#define or ||
+
+int graph[MAX][MAX];
+int dist[MAX];
+bool visited[MAX];
+int num_vertices;
+
+int minDistance()
+{
+  int min = INT_MAX, minIndex;
+  int v;
+  for (v = 0; v < num_vertices; v++)
+    if (visited[v] == false and dist[v] <= min)
+      min = dist[v], minIndex = v;
+  return minIndex;
+}
+
+void dijkstra(int src)
+{
+  int i, count;
+  for (i = 0; i < num_vertices; i++)
+    dist[i] = INT_MAX, visited[i] = false;
+  dist[src] = 0;
+  for (count = 0; count < num_vertices - 1; count++)
+  {
+    int u = minDistance();
+    visited[u] = true;
+    int v;
+    for (v = 0; v < num_vertices; v++)
+      if (not visited[v] and graph[u][v] and dist[u] != INT_MAX and dist[u] + graph[u][v] < dist[v])
+        dist[v] = dist[u] + graph[u][v];
+  }
+}
+
+int main()
+{
+  int i, j;
+  int source, destination;
+  printf("Enter the number of vertices: ");
+  scanf("%d", &num_vertices);
+  printf("Enter the cost matrix:\n");
+  for (i = 0; i < num_vertices; i++)
+    for (j = 0; j < num_vertices; j++)
+      scanf("%d", &graph[i][j]);
+  printf("Enter the source vertex: ");
+  scanf("%d", &source);
+  printf("Enter the destination vertex: ");
+  scanf("%d", &destination);
+  dijkstra(source);
+  printf("The shortest distance from vertex %d to vertex %d is %d\n", source, destination, dist[destination]);
+  return 0;
+}
