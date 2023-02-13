@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX 1000
+#define not !
+#define and &&
+#define or ||
+
+int cost[MAX][MAX];
+int parent[MAX];
+int key[MAX];
+bool mstSet[MAX];
+int num_vertices;
+
+int minKey()
+{
+  int min = INT_MAX, minIndex;
+  int v;
+  for (v = 0; v < num_vertices; v++)
+    if (mstSet[v] == false and key[v] < min)
+      min = key[v], minIndex = v;
+  return minIndex;
+}
+
+void printMST(int parent[])
+{
+  int i;
+  printf("Edge   Weight\n");
+  for (i = 1; i < num_vertices; i++)
+    printf("%d - %d    %d \n", parent[i], i, cost[i][parent[i]]);
+}
+
+void primMST()
+{
+  int i, count;
+  for (i = 0; i < num_vertices; i++)
+  {
+    key[i] = INT_MAX;
+    mstSet[i] = false;
+  }
+  key[0] = 0;
+  parent[0] = -1;
+  for (count = 0; count < num_vertices - 1; count++)
+  {
+    int u = minKey();
+    mstSet[u] = true;
+    int v;
+    for (v = 0; v < num_vertices; v++)
+      if (cost[u][v] and mstSet[v] == false and cost[u][v] < key[v])
+        parent[v] = u, key[v] = cost[u][v];
+  }
+  printMST(parent);
+}
+
+int main()
+{
+  int i, j;
+  printf("Enter the number of vertices: ");
+  scanf("%d", &num_vertices);
+  printf("Enter the cost matrix:\n");
+  for (i = 0; i < num_vertices; i++)
+    for (j = 0; j < num_vertices; j++)
+      scanf("%d", &cost[i][j]);
+  printf("The minimum spanning tree is:\n");
+  primMST();
+  return 0;
+}
