@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 100
+
+// Structure for queue
+struct Queue {
+    int front, rear, size;
+    int elements[MAX_SIZE];
+};
+
+// Function to create a queue
+struct Queue* createQueue() {
+    struct Queue* q = (struct Queue*) malloc(sizeof(struct Queue));
+    q->front = q->size = 0;
+    q->rear = MAX_SIZE - 1;
+    return q;
+}
+
+// Function to check if the queue is full
+int isFull(struct Queue* q) {
+    return (q->size == MAX_SIZE);
+}
+
+// Function to check if the queue is empty
+int isEmpty(struct Queue* q) {
+    return (q->size == 0);
+}
+
+// Function to add an element to the queue
+void enqueue(struct Queue* q, int item) {
+    if (isFull(q))
+        return;
+    q->rear = (q->rear + 1) % MAX_SIZE;
+    q->elements[q->rear] = item;
+    q->size = q->size + 1;
+    printf("%d enqueued to queue\n", item);
+}
+
+// Function to remove an element from the queue
+int dequeue(struct Queue* q) {
+    if (isEmpty(q))
+        return INT_MIN;
+    int item = q->elements[q->front];
+    q->front = (q->front + 1) % MAX_SIZE;
+    q->size = q->size - 1;
+    return item;
+}
+
+// Function to display the queue
+void displayQueue(struct Queue* q) {
+    int i;
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue elements are: ");
+    for (i = q->front; i != q->rear; i = (i + 1) % MAX_SIZE)
+        printf("%d ", q->elements[i]);
+    printf("%d\n", q->elements[i]);
+}
+
+int main() {
+    struct Queue* q = createQueue();
+    enqueue(q, 10);
+    enqueue(q, 20);
+    enqueue(q, 30);
+    enqueue(q, 40);
+    displayQueue(q);
+    printf("%d dequeued from queue\n", dequeue(q));
+    printf("%d dequeued from queue\n", dequeue(q));
+    displayQueue(q);
+    return 0;
+}
